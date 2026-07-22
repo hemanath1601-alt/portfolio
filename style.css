@@ -277,15 +277,20 @@ section {
 .project-grid {
 
     display: grid;
+
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
+
+    gap: 35px;
+
+    margin-top: 50px;
+
 }
 
 .card {
 
-    background: #11203a;
+    background: #13213d;
 
-    padding: 30px;
+    padding: 40px 30px;
 
     border-radius: 20px;
 
@@ -293,55 +298,55 @@ section {
 
     transition: .4s;
 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, .35);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .3);
+
 }
 
 .card:hover {
 
-    transform: translateY(-10px);
+    transform: translateY(-12px);
 
-    box-shadow: 0 0 30px rgba(56, 189, 248, .45);
+    box-shadow: 0 0 25px #38bdf8;
+
 }
 
-.card i {
+.icon {
 
-    font-size: 50px;
-
-    color: #38bdf8;
+    font-size: 60px;
 
     margin-bottom: 20px;
+
 }
 
 .card h3 {
 
-    margin-bottom: 15px;
+    font-size: 28px;
 
     color: #38bdf8;
+
+    margin-bottom: 20px;
+
 }
 
 .card p {
 
-    color: #d1d5db;
+    font-size: 18px;
 
-    line-height: 1.7;
+    line-height: 1.8;
+
+    color: #d6d6d6;
+
+    min-height: 120px;
+
 }
 
-.card h4 {
-
-    margin-top: 20px;
-
-    color: #ffffff;
-}
-
-.card a {
+.project-btn {
 
     display: inline-block;
 
     margin-top: 20px;
 
-    padding: 10px 25px;
-
-    border-radius: 30px;
+    padding: 14px 35px;
 
     background: #38bdf8;
 
@@ -349,14 +354,20 @@ section {
 
     font-weight: 600;
 
+    border-radius: 40px;
+
     transition: .3s;
+
 }
 
-.card a:hover {
+.project-btn:hover {
 
-    background: #2563eb;
+    background: white;
 
-    color: white;
+    color: #08121f;
+
+    transform: scale(1.05);
+
 }
 
 /* ===========================
@@ -574,4 +585,13 @@ footer {
 #topBtn:hover {
 
     transform: scale(1.1);
+}
+
+.hero-image img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 6px solid #38bdf8;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
 }
