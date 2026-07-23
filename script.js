@@ -1,84 +1,281 @@
-// ================================
+
+/*=========================================
+      HEMANATHAN PORTFOLIO
+      PART 3.1
+==========================================*/
+
+// =============================
+// Loader
+// =============================
+
+window.addEventListener("load", () => {
+
+    const loader = document.getElementById("loader");
+
+    if (loader) {
+
+        loader.style.opacity = "0";
+
+        setTimeout(() => {
+
+            loader.style.display = "none";
+
+        }, 500);
+
+    }
+
+});
+
+// =============================
 // Typing Animation
-// ================================
+// =============================
+
+const typingElement = document.querySelector(".typing");
 
 const words = [
-    "AI & ML Engineer",
+
+    "Computer Science Engineering ",
+
+    "Aspiring Software Engineer",
+
+    "AI & Machine Learning Enthusiast",
+
+    "Data Analytics Enthusiast",
+
     "Python Developer",
-    "Data Analyst",
-    "Computer Vision Enthusiast",
+
     "IoT Developer"
+
 ];
 
 let wordIndex = 0;
+
 let charIndex = 0;
-let deleting = false;
 
-const typing = document.querySelector(".typing");
+let isDeleting = false;
 
-function typeEffect() {
+function typingEffect() {
 
-    if (!typing) return;
+    if (!typingElement) return;
 
     const currentWord = words[wordIndex];
 
-    if (!deleting) {
-        typing.textContent = currentWord.substring(0, charIndex++);
+    if (!isDeleting) {
+
+        typingElement.textContent = currentWord.substring(0, charIndex++);
+
     } else {
-        typing.textContent = currentWord.substring(0, charIndex--);
+
+        typingElement.textContent = currentWord.substring(0, charIndex--);
+
     }
 
-    let speed = deleting ? 50 : 100;
+    let speed = isDeleting ? 60 : 120;
 
-    if (!deleting && charIndex === currentWord.length + 1) {
-        deleting = true;
+    if (!isDeleting && charIndex > currentWord.length) {
+
+        isDeleting = true;
+
         speed = 1500;
+
     }
 
-    if (deleting && charIndex === 0) {
-        deleting = false;
-        wordIndex = (wordIndex + 1) % words.length;
+    if (isDeleting && charIndex < 0) {
+
+        isDeleting = false;
+
+        wordIndex++;
+
+        if (wordIndex >= words.length) {
+
+            wordIndex = 0;
+
+        }
+
     }
 
-    setTimeout(typeEffect, speed);
+    setTimeout(typingEffect, speed);
+
 }
 
-typeEffect();
+typingEffect();
 
+// =============================
+// Mobile Menu
+// =============================
 
-// ================================
-// Reveal Animation
-// ================================
+const menuBtn = document.querySelector(".menu-toggle");
 
-const observer = new IntersectionObserver((entries) => {
+const navLinks = document.querySelector(".nav-links");
+
+if (menuBtn) {
+
+    menuBtn.addEventListener("click", () => {
+
+        navLinks.classList.toggle("active");
+
+        menuBtn.classList.toggle("fa-times");
+
+    });
+
+}
+
+document.querySelectorAll(".nav-links a").forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        navLinks.classList.remove("active");
+
+        if (menuBtn) {
+
+            menuBtn.classList.remove("fa-times");
+
+        }
+
+    });
+
+});
+
+// =============================
+// Scroll To Top
+// =============================
+
+const scrollBtn = document.getElementById("scrollTop");
+
+window.addEventListener("scroll", () => {
+
+    if (!scrollBtn) return;
+
+    if (window.scrollY > 300) {
+
+        scrollBtn.style.display = "flex";
+
+    } else {
+
+        scrollBtn.style.display = "none";
+
+    }
+
+});
+
+if (scrollBtn) {
+
+    scrollBtn.onclick = () => {
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    };
+
+}
+
+// =============================
+// Animated Counters
+// =============================
+
+const counters = document.querySelectorAll(".counter");
+
+const counterObserver = new IntersectionObserver(entries => {
 
     entries.forEach(entry => {
 
         if (entry.isIntersecting) {
-            entry.target.classList.add("show");
+
+            const counter = entry.target;
+
+            const target = +counter.dataset.target;
+
+            let count = 0;
+
+            const update = () => {
+
+                count += Math.ceil(target / 50);
+
+                if (count < target) {
+
+                    counter.innerText = count;
+
+                    requestAnimationFrame(update);
+
+                } else {
+
+                    counter.innerText = target;
+
+                }
+
+            };
+
+            update();
+
+            counterObserver.unobserve(counter);
+
         }
 
     });
 
 }, {
-    threshold: 0.2
-});
 
-document.querySelectorAll("section").forEach(section => {
-
-    section.classList.add("hidden");
-
-    observer.observe(section);
+    threshold: 0.5
 
 });
 
+counters.forEach(counter => {
 
-// ================================
-// Smooth Navbar Highlight
-// ================================
+    counterObserver.observe(counter);
+
+});
+
+console.log("🚀 Portfolio Loaded Successfully");
+/*=========================================
+        PART 3.2
+==========================================*/
+
+// =============================
+// Scroll Reveal Animation
+// =============================
+
+const revealElements = document.querySelectorAll(
+    "section, .project-card, .skill-card, .achievement-card, .certificate-card, .internship-card, .timeline-item"
+);
+
+const revealObserver = new IntersectionObserver((entries) => {
+
+    entries.forEach((entry) => {
+
+        if (entry.isIntersecting) {
+
+            entry.target.classList.add("show");
+
+        }
+
+    });
+
+}, {
+
+    threshold: 0.15
+
+});
+
+revealElements.forEach((element) => {
+
+    element.classList.add("hidden");
+
+    revealObserver.observe(element);
+
+});
+
+// =============================
+// Active Navbar Highlight
+// =============================
 
 const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".nav-links a");
+
+const navItems = document.querySelectorAll(".nav-links a");
 
 window.addEventListener("scroll", () => {
 
@@ -86,61 +283,164 @@ window.addEventListener("scroll", () => {
 
     sections.forEach(section => {
 
-        const sectionTop = section.offsetTop - 120;
+        const top = section.offsetTop - 150;
 
-        if (pageYOffset >= sectionTop) {
+        const height = section.offsetHeight;
+
+        if (window.scrollY >= top && window.scrollY < top + height) {
+
             current = section.getAttribute("id");
+
         }
 
     });
 
-    navLinks.forEach(link => {
+    navItems.forEach(link => {
 
         link.classList.remove("active");
 
         if (link.getAttribute("href") === "#" + current) {
+
             link.classList.add("active");
+
         }
 
     });
 
 });
 
+// =============================
+// Smooth Scroll
+// =============================
 
-// ================================
-// Back To Top Button
-// ================================
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
-const topBtn = document.createElement("button");
+    anchor.addEventListener("click", function (e) {
 
-topBtn.innerHTML = "↑";
+        e.preventDefault();
 
-topBtn.id = "topBtn";
+        const target = document.querySelector(this.getAttribute("href"));
 
-document.body.appendChild(topBtn);
+        if (target) {
+
+            target.scrollIntoView({
+
+                behavior: "smooth"
+
+            });
+
+        }
+
+    });
+
+});
+
+// =============================
+// Dark Mode
+// =============================
+
+const themeBtn = document.getElementById("themeToggle");
+
+const body = document.body;
+
+if (localStorage.getItem("theme") === "light") {
+
+    body.classList.add("light-mode");
+
+    if (themeBtn) {
+
+        themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+
+    }
+
+}
+
+if (themeBtn) {
+
+    themeBtn.addEventListener("click", () => {
+
+        body.classList.toggle("light-mode");
+
+        if (body.classList.contains("light-mode")) {
+
+            localStorage.setItem("theme", "light");
+
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+
+        } else {
+
+            localStorage.setItem("theme", "dark");
+
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+
+        }
+
+    });
+
+}
+
+// =============================
+// Contact Form
+// =============================
+
+// Replace with your EmailJS details
+emailjs.init("ImZoPAuddezOuVPGD");
+const contactForm = document.getElementById("contact-form");
+
+contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    emailjs.sendForm(
+        "service_xjr10cl",
+        "template_e16ow1q",
+        this
+    )
+        .then(function () {
+            alert("✅ Message Sent Successfully!");
+            contactForm.reset();
+        })
+        .catch((error) => {
+            console.error("EmailJS Error:", error);
+            alert(error.text || JSON.stringify(error));
+        });
+});
+
+
+
+// =============================
+// Navbar Shadow
+// =============================
+
+const header = document.querySelector("header");
 
 window.addEventListener("scroll", () => {
 
-    if (window.scrollY > 300) {
-        topBtn.style.display = "block";
+    if (window.scrollY > 50) {
+
+        header.style.boxShadow = "0 5px 25px rgba(0,191,255,.20)";
+
     } else {
-        topBtn.style.display = "none";
+
+        header.style.boxShadow = "none";
+
     }
 
 });
 
-topBtn.onclick = () => {
+// =============================
+// Current Year
+// =============================
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+const year = document.querySelector(".copyright");
 
-};
+if (year) {
 
+    year.innerHTML = `© ${new Date().getFullYear()} Hemanathan T. All Rights Reserved.`;
 
-// ================================
+}
+
+// =============================
 // Console
-// ================================
+// =============================
 
-console.log("Portfolio Loaded Successfully 🚀");
+console.log("🔥 Premium Portfolio Ready");
